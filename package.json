@@ -1,0 +1,9 @@
+{
+  "name": "carta-alta",
+  "version": "0.1.0",
+  "description": "Base de juego de cartas con baraja de póker (52 cartas) en JavaScript puro",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/*.test.js"
+  }
+}

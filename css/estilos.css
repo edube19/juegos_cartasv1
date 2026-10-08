@@ -1,0 +1,209 @@
+:root {
+  --fieltro: #1f6b3a;
+  --fieltro-oscuro: #154d29;
+  --texto: #f3f3f3;
+  --rojo: #c62828;
+  --negro: #1b1b1b;
+  --naranja:#df8022;
+  --dorado: #ffd54f;
+  --ancho-carta: 72px;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: var(--fieltro);
+  color: var(--texto);
+  min-height: 100vh;
+}
+
+h2 { font-size: .85rem; font-weight: normal; opacity: .8; margin: 0 0 6px; }
+
+/* ---- Botones ---- */
+button {
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+button.primario { background: var(--dorado); color: var(--negro); }
+button.secundario { background: rgba(255,255,255,.15); color: var(--texto); }
+button:hover { filter: brightness(1.1); }
+
+/* ---- Menú principal ---- */
+.menu { max-width: 720px; margin: 0 auto; padding: 48px 16px; text-align: center; }
+.menu h1 { font-size: 2.2rem; margin: 0 0 8px; }
+.subtitulo { opacity: .8; margin: 0 0 32px; }
+.lista-modos { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+.modo {
+  background: var(--fieltro-oscuro);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,.3);
+}
+.modo h2 { font-size: 1.2rem; font-weight: bold; opacity: 1; margin: 0; }
+.modo p { margin: 0; flex: 1; font-size: .9rem; opacity: .85; }
+.modo > button { align-self: flex-start; }
+
+/* Selectores del menú (jugadores y ajustes de cada modo) */
+.selectores { display: flex; flex-direction: column; gap: 6px; }
+.selector { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: .9rem; }
+.opciones { display: flex; gap: 4px; flex-wrap: wrap; }
+.opcion { padding: 4px 10px; background: rgba(255,255,255,.15); color: var(--texto); }
+.opcion[aria-pressed="true"] { background: var(--dorado); color: var(--negro); }
+.selector small { opacity: .7; }
+
+/* ---- Barra superior de la partida ---- */
+.barra {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  background: var(--fieltro-oscuro);
+}
+.barra h1 { margin: 0; font-size: 1.4rem; flex: 1; }
+
+/* ---- Modo Carta Alta ---- */
+.ca { display: grid; grid-template-columns: 1fr 240px; min-height: calc(100vh - 60px); }
+.ca-tablero { padding: 16px; display: flex; flex-direction: column; gap: 20px; }
+.marcador { display: flex; gap: 16px; flex-wrap: wrap; }
+.marcador .yo b { color: var(--dorado); }
+.marcador .info { margin-left: auto; opacity: .8; }
+.mano { display: flex; gap: 8px; flex-wrap: wrap; min-height: calc(var(--ancho-carta) * 1.4); }
+
+/* Rivales (CPU): cartas boca abajo en tamaño pequeño */
+.rivales { display: flex; gap: 16px; flex-wrap: wrap; }
+.rival { background: rgba(0,0,0,.15); border-radius: 8px; padding: 8px 10px; }
+.mano.mini { --ancho-carta: 30px; gap: 4px; }
+.mano.mini .carta.reverso { border-width: 2px; border-radius: 4px; }
+
+.mesa { display: flex; align-items: flex-end; justify-content: center; gap: 20px; flex-wrap: wrap; text-align: center; }
+.puesto { display: flex; flex-direction: column; align-items: center; }
+.mensaje { text-align: center; margin: 0; min-height: 1.4em; font-weight: bold; }
+.hueco {
+  width: var(--ancho-carta);
+  height: calc(var(--ancho-carta) * 1.4);
+  border: 2px dashed rgba(255,255,255,.3);
+  border-radius: 8px;
+}
+
+.historial { padding: 16px; background: var(--fieltro-oscuro); overflow-y: auto; }
+.historial ol { padding-left: 20px; margin: 0; font-size: .85rem; }
+.historial li.jugador { color: #a5d6a7; }
+.historial li.cpu { color: #ef9a9a; }
+
+/* ---- Carta ---- */
+.carta {
+  position: relative;
+  width: var(--ancho-carta);
+  height: calc(var(--ancho-carta) * 1.4);
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,.4);
+  user-select: none;
+}
+.carta.rojo { color: var(--rojo); }
+.carta.negro { color: var(--negro); }
+.carta.naranja { color: var(--naranja); }
+.carta.joker { color: #6a1b9a; background: linear-gradient(160deg, #fff 40%, #e1bee7); }
+.esquina { position: absolute; font-size: .8rem; line-height: 1; text-align: center; font-weight: bold; }
+.esquina.sup { top: 5px; left: 5px; }
+.esquina.inf { bottom: 5px; right: 5px; transform: rotate(180deg); }
+.centro { position: absolute; inset: 0; display: grid; place-items: center; font-size: 2rem; }
+
+.carta.reverso {
+  background: repeating-linear-gradient(45deg, #283593 0 6px, #3949ab 6px 12px);
+  border: 3px solid #fff;
+}
+.carta.jugable { cursor: pointer; transition: transform .15s; }
+.carta.jugable:hover { transform: translateY(-8px); }
+.hueco .carta { margin: -2px; }
+.carta.ganadora { outline: 3px solid var(--dorado); }
+
+/* ---- Pantalla de opciones ---- */
+.boton-opciones { margin-top: 28px; }
+.form-opciones { max-width: 560px; margin: 0 auto; padding: 24px 16px; display: flex; flex-direction: column; gap: 16px; }
+.form-opciones fieldset { border: 0; border-radius: 12px; background: var(--fieltro-oscuro); padding: 16px 20px; margin: 0; }
+.form-opciones legend { float: left; width: 100%; padding: 0; font-weight: bold; font-size: 1.1rem; margin-bottom: 4px; }
+.ayuda { clear: both; margin: 0 0 14px; font-size: .85rem; opacity: .8; }
+.campos { display: grid; gap: 10px; }
+.campo { display: grid; grid-template-columns: 70px 1fr; align-items: center; gap: 12px; }
+.campo span { opacity: .8; font-size: .9rem; }
+.campo input {
+  font: inherit;
+  padding: 8px 10px;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  background: rgba(255,255,255,.92);
+  color: var(--negro);
+  min-width: 0;
+}
+.campo input:focus { outline: none; border-color: var(--dorado); }
+.estado { margin: 0; min-height: 1.2em; color: var(--dorado); font-size: .9rem; }
+.form-opciones .acciones { justify-content: flex-start; }
+
+/* ---- Mensaje de fin de partida ---- */
+dialog {
+  border: 0;
+  border-radius: 14px;
+  padding: 28px 32px;
+  min-width: min(360px, calc(100vw - 32px));
+  text-align: center;
+  background: var(--fieltro-oscuro);
+  color: var(--texto);
+  box-shadow: 0 10px 40px rgba(0,0,0,.6);
+  border-top: 6px solid var(--dorado);
+}
+dialog::backdrop { background: rgba(0,0,0,.6); }
+dialog[data-resultado="derrota"] { border-top-color: var(--rojo); }
+dialog[data-resultado="empate"] { border-top-color: #90a4ae; }
+dialog h2 { font-size: 1.6rem; font-weight: bold; opacity: 1; margin: 0 0 8px; }
+dialog p { margin: 0 0 24px; opacity: .9; }
+.acciones { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+/* ---- Modo P07o-suci0 ---- */
+.ps { display: grid; grid-template-columns: 1fr 260px; min-height: calc(100vh - 60px); }
+.ps-tablero { padding: 16px; display: flex; flex-direction: column; gap: 18px; }
+.ps-estado { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.ps-estado .mensaje { flex: 1; text-align: left; min-width: 200px; }
+.mensaje.accion { color: var(--dorado); }
+.buscada { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 8px 12px; background: rgba(0,0,0,.2); border-radius: 10px; }
+.buscada > .carta { outline: 3px solid var(--dorado); }
+.texto-as { font-size: .8rem; }
+.ases-pendientes { display: flex; gap: 4px; --ancho-carta: 40px; }
+.ases-pendientes .centro { font-size: 1.1rem; }
+
+.pilas { display: flex; gap: 14px; flex-wrap: wrap; }
+.pila { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.pila small { opacity: .8; }
+.pila.activa .hueco { border-color: var(--dorado); border-style: solid; }
+.palo-vacio { display: grid; place-items: center; height: 100%; font-size: 1.8rem; opacity: .35; }
+.palo-vacio.rojo { color: #ffcdd2; }
+.palo-vacio.naranja { color: #ffe0b2; }
+
+.rival.turno { outline: 2px solid var(--texto); }
+.rival.retirado { opacity: .6; }
+.rival.victima { outline: 3px solid var(--dorado); animation: pulso 1.2s infinite; }
+@keyframes pulso { 50% { outline-color: transparent; } }
+.mano.abanico { gap: 0; min-height: calc(var(--ancho-carta) * 1.4); }
+.mano.abanico .carta + .carta { margin-left: -18px; }
+.carta.robable { cursor: pointer; transition: transform .15s; }
+.carta.robable:hover { transform: translateY(-6px); outline: 2px solid var(--dorado); }
+.carta.valida { outline: 3px solid var(--dorado); }
+.carta.apagada { opacity: .5; }
+
+.historial li.fallo { opacity: .75; }
+.historial li.joker { color: #e1bee7; font-weight: bold; }
+
+@media (max-width: 700px) {
+  .ca, .ps { grid-template-columns: 1fr; }
+  :root { --ancho-carta: 56px; }
+}

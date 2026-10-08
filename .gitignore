@@ -1,0 +1,5 @@
+# Configuración local de Claude Code
+.claude/
+
+# Documentación interna del proyecto
+CONTEXTO.md
